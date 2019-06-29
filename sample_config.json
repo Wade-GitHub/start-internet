@@ -1,0 +1,11 @@
+{
+    "browser": "firefox",
+    "browser_path": "/usr/bin/firefox",
+    "websites": [
+        "https://www.google.com",
+        "https://www.youtube.com",
+        "https://www.facebook.com",
+        "https://www.twitter.com",
+        "https://www.howtogeek.com"
+    ]
+}
