@@ -1,0 +1,6 @@
+# Ignore everything except for a few select files
+*
+!start_internet.py
+!sample_config.json
+!README.md
+!.gitignore
