@@ -17,11 +17,13 @@ import time
 import json
 import os
 
+
 def load_config(json_file):
     current_dir = os.path.abspath(os.path.dirname(__file__))
     with open(os.path.join(current_dir, json_file), "r") as config_file:
         config = json.load(config_file)
     return config
+
 
 def set_browser(browser_type="default", path="default"):
     if browser_type != "default" and path != "default":
@@ -29,6 +31,7 @@ def set_browser(browser_type="default", path="default"):
         browser = webbrowser.get(browser_type)
         return browser
     return webbrowser
+
 
 def open_links(sites_list, browser):
     browser.open(sites_list[0])
@@ -45,6 +48,6 @@ if __name__ == "__main__":
     browser_path = config["browser_path"]
     websites_list = config["websites"]
 
-    browser = set_browser(browser_type, browser_path)
+    browser_to_use = set_browser(browser_type, browser_path)
 
-    open_links(websites_list, browser)
+    open_links(websites_list, browser_to_use)
