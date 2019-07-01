@@ -62,6 +62,6 @@ browser performance.
 
 ## Licence
 
-This script uses the MIT licence. I don't really care what you do with this script, but just
+This script uses the MIT licence. You can do what you want with this script, but just
 understand that I'm not responsible for any malicious and/or damaging activity you do with
 it.
