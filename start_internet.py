@@ -1,23 +1,43 @@
-"""
-start_internet.py
-A Small script to open up starting pages when accessing the internet in a
-web browser.
-
-See the README.md file for more info.
-
-Author: Wade
-Licence: MIT
-Contact: wwrwade@gmail.com
-
-TODO: add error control
-TODO: make program use command line arguments
-"""
-
 import webbrowser
 import sys
 import time
 import json
 import os
+import argparse
+
+
+PROGRAM_DESCRIPTION = """
+A Small script to open up starting pages when accessing the internet in a
+web browser.
+
+See the README.md file for more info.
+"""
+
+CONTACT_INFO = """
+Author: Wade
+Licence: MIT
+Contact: wwrwade@gmail.com
+"""
+
+
+def get_arguments() -> argparse.Namespace:
+    """
+    Get the arguments from the command line and parse them.
+
+    At the moment, the program only takes in a config_file argument, which is
+    a JSON file that contains the configuration for things like the type of
+    web browser to use and the links to open in that browser.
+    """
+    parser = argparse.ArgumentParser(
+        description=PROGRAM_DESCRIPTION,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=CONTACT_INFO
+    )
+    parser.add_argument(
+        "config_file", help="The JSON file that contains the web links."
+    )
+    args = parser.parse_args()
+    return args.config_file
 
 
 def load_config(json_file: str) -> dict:
@@ -72,7 +92,9 @@ def open_links(sites_list: list, browser):
 
 
 if __name__ == "__main__":
-    config = load_config("config.json")
+    config_file = get_arguments()
+
+    config = load_config(config_file)
 
     browser_type = config["browser"]
     browser_path = config["browser_path"]
