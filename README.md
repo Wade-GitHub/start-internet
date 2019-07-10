@@ -21,7 +21,12 @@ certainly have multiple JSON files with different groups of related links.
 As an example, there could be a JSON file called "entertainment.json" to open links for
 youtube and twitch, another JSON file called "social.json" to open links for facebook
 and twitter, and another JSON file called "work.json" to open links for emails and
-your company web login page, among other things.
+your company web login page, among other things. All you need to do is pass the name of
+your JSON file to the program like so:
+
+`$python start_internet.py config.json`
+
+Where "config.json" is the name of the json file you made.
 
 In this repository there is a sample JSON file called "sample_config.json", which gives an
 example of the layout for the JSON files:
