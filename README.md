@@ -65,3 +65,7 @@ browser performance.
 This script uses the MIT licence. You can do what you want with this script, but just
 understand that I'm not responsible for any malicious and/or damaging activity you do with
 it.
+
+## To do
+
+- Add error control
