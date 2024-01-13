@@ -1,9 +1,10 @@
-import webbrowser
+import argparse
+import json
+import pathlib
 import sys
 import time
-import json
-import os
-import argparse
+import webbrowser
+import yaml
 
 
 PROGRAM_DESCRIPTION = """
@@ -40,17 +41,29 @@ def get_arguments() -> argparse.Namespace:
     return args.config_file
 
 
-def load_config(json_file: str) -> dict:
+def load_config(config_file: str) -> dict:
     """
-    Load the configuration settings stored in json_file and return as a
-    dictionary with settings.
+    Load config from a given file.
 
-    This will always look for the JSON file inside the same directory that
+    This will always look for the config file inside the same directory that
     this script is currently in.
+
+    Args:
+        config_file: A file that contains config. This can be in one of the
+            following forms:
+            - json
+            - yaml
+
     """
-    current_dir = os.path.abspath(os.path.dirname(__file__))
-    with open(os.path.join(current_dir, json_file), "r") as config_file:
-        config = json.load(config_file)
+    current_dir = pathlib.Path(__file__).parent
+    config_file_path = current_dir / config_file
+
+    config = None
+    with open(config_file_path, "r") as f:
+        if config_file.endswith(".json"):
+            config = json.load(f)
+        elif (config_file.endswith(".yml") or config_file.endswith(".yaml")):
+            config = yaml.safe_load(f)
     return config
 
 
@@ -68,8 +81,9 @@ def set_browser(browser_type="default", path="default"):
     system's default webbrowser.
     """
     if browser_type != "default" and path != "default":
-        webbrowser.register(browser_type, None,
-                            webbrowser.BackgroundBrowser(path))
+        webbrowser.register(
+            browser_type, None, webbrowser.BackgroundBrowser(path)
+        )
         browser = webbrowser.get(browser_type)
         return browser
     return webbrowser
@@ -84,11 +98,19 @@ def open_links(sites_list: list, browser):
     currently open, the links will be opened in new tabs in that browser
     window.
     """
-    browser.open(sites_list[0])
+    first_link = sites_list[0]
+    rest = sites_list[1:]
+
+    browser.open(first_link)
     if sys.platform == "win32":
-        time.sleep(6)
-    for link in sites_list[1:]:
-        browser.open_new_tab(link)
+        # Windows has a quirky issue where if the web browser isn't yet open,
+        # there's a startup delay that will skip one of the links when looping
+        # over them too quickly.
+        # The added sleep delay lets the browser "warm up" with the first link,
+        # before looping over the rest.
+        time.sleep(2)
+    for link in rest:
+        browser.open(link)
 
 
 if __name__ == "__main__":
